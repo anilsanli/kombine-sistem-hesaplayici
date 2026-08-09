@@ -8,22 +8,45 @@ st.set_page_config(
     layout="wide",
 )
 
-# Custom CSS ile Modern UI/UX İyileştirmeleri ve Kesin Dark Mode Düzeltmeleri
+# Custom CSS - Dark Mode Override & Tooltip / Popover Fixes
 st.markdown(
     """
     <style>
-    /* Arka planı açık moda sabitleme */
+    /* 1. UYGULAMA VE GENEL METİNLER */
     .stApp {
         background-color: #f8f9fa !important;
         color: #1f2937 !important;
     }
 
-    /* Tüm genel metinlerin rengini sabitleme */
     h1, h2, h3, h4, h5, h6, p, label, span {
         color: #1f2937 !important;
     }
 
-    /* 1. INPUT, SELECTBOX & NUMBER INPUT KUTULARI FIX */
+    /* 2. TOOLTIP / BİLGİ BALONCUKLARI VE HELP SİMGELERİ KESİN FIX */
+    div[data-baseweb="tooltip"],
+    div[role="tooltip"],
+    div[data-testid="stTooltipContent"],
+    .stTooltipHoverTarget {
+        background-color: #0f172a !important;
+        color: #ffffff !important;
+        border-radius: 6px !important;
+    }
+
+    div[data-baseweb="tooltip"] *,
+    div[role="tooltip"] *,
+    div[data-testid="stTooltipContent"] * {
+        background-color: transparent !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+    }
+
+    /* Help simgesi ikonu (?) */
+    div[data-testid="stMarkdownContainer"] svg,
+    div[data-testid="stTooltipHoverTarget"] svg {
+        fill: #64748b !important;
+    }
+
+    /* 3. INPUT, SELECTBOX & NUMBER INPUT KUTULARI */
     div[data-baseweb="input"], 
     div[data-baseweb="select"] > div {
         background-color: #ffffff !important;
@@ -31,20 +54,17 @@ st.markdown(
         border-radius: 8px !important;
     }
 
-    /* Kutuların içindeki metinler ve sayılar */
     input, select, textarea {
         color: #0f172a !important;
         background-color: #ffffff !important;
         -webkit-text-fill-color: #0f172a !important;
     }
 
-    /* 2. NUMBER INPUT EKSİ / ARTI BUTONLARI VE İÇİNDEKİ SİMGELER FIX */
+    /* Eksi/Artı Butonları */
     div[data-testid="stNumberInput"] button,
     div[data-testid="stNumberInputContainer"] button,
     button[aria-label="Decrease value"],
-    button[aria-label="Increase value"],
-    button[data-testid="stNumberInputStepDown"],
-    button[data-testid="stNumberInputStepUp"] {
+    button[aria-label="Increase value"] {
         background-color: #f1f5f9 !important;
         color: #0f172a !important;
         border: 1px solid #cbd5e1 !important;
@@ -59,7 +79,7 @@ st.markdown(
         -webkit-text-fill-color: #0f172a !important;
     }
 
-    /* 3. DROPDOWN (AÇILIR MENÜ) FIX */
+    /* 4. DROPDOWN (AÇILIR MENÜ) FIX */
     div[data-baseweb="popover"],
     div[data-baseweb="menu"],
     ul[role="listbox"],
@@ -69,8 +89,7 @@ st.markdown(
         -webkit-text-fill-color: #0f172a !important;
     }
 
-    li[role="option"], 
-    div[role="option"] {
+    li[role="option"], div[role="option"] {
         background-color: #ffffff !important;
         color: #0f172a !important;
         -webkit-text-fill-color: #0f172a !important;
@@ -84,7 +103,7 @@ st.markdown(
         -webkit-text-fill-color: #e11d48 !important;
     }
 
-    /* 4. EXPANDER (KATLANABİLİR KARTLAR) FIX */
+    /* 5. EXPANDER FIX */
     div[data-testid="stExpander"] {
         background-color: #ffffff !important;
         border: 1px solid #cbd5e1 !important;
@@ -102,7 +121,7 @@ st.markdown(
         color: #0f172a !important;
     }
 
-    /* 5. KUPONU SIFIRLA VE TÜM BUTONLARIN İÇ SİYAH KUTU FIXI */
+    /* 6. BUTON HİZALAMALARI VE SIFIRLA BUTONU */
     div.stButton > button,
     div.stButton > button *,
     div.stButton > button div,
@@ -126,7 +145,7 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* CARD VEYA BANNER STİLLERİ */
+    /* BİLGİ KARTLARI */
     .horse-card {
         background-color: #ffffff !important;
         border-radius: 10px;
@@ -244,10 +263,9 @@ with col_setup3:
         key="num_misli",
         help="Bilet tutarınız ve kazancınız seçtiğiniz misli ile çarpılır.",
     )
-    kolon_birim_fiyati = 1.0  # Sabit sistem kolon bedeli (1 TL)
+    kolon_birim_fiyati = 1.0
 
 
-# --- ÖN HESAPLAMA: BAHİS SAYISI VE KUPON BEDELİ ---
 def hesapla_bahis_sayisi(at_sayisi):
     sistem_haritasi = {
         1: sistem_1,
@@ -266,7 +284,6 @@ def hesapla_bahis_sayisi(at_sayisi):
 bahis_sayisi = hesapla_bahis_sayisi(col_count)
 kupon_bedeli = bahis_sayisi * kolon_birim_fiyati * misli
 
-# --- BILGI BANNER / OZET KARTI ---
 st.markdown(
     f"""
     <div class="summary-banner">
