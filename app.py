@@ -19,7 +19,7 @@ st.markdown(
     }
 
     /* Tüm genel metinlerin rengini sabitleme */
-    h1, h2, h3, h4, h5, h6, p, label, span, div {
+    h1, h2, h3, h4, h5, h6, p, label, span {
         color: #1f2937 !important;
     }
 
@@ -106,6 +106,20 @@ st.markdown(
     div.stButton > button p {
         color: #ffffff !important;
         -webkit-text-fill-color: #ffffff !important;
+    }
+
+    /* 5. STREAMLIT BİLGİ VE UYARI KUTULARINI (st.info, st.warning, st.error) FIXLEME */
+    div[data-testid="stAlert"] {
+        background-color: #eff6ff !important;
+        color: #1e40af !important;
+        border: 1px solid #bfdbfe !important;
+        border-radius: 8px !important;
+    }
+    div[data-testid="stAlert"] p, 
+    div[data-testid="stAlert"] span, 
+    div[data-testid="stAlert"] div {
+        color: #1e40af !important;
+        -webkit-text-fill-color: #1e40af !important;
     }
 
     /* CARD VEYA BANNER STİLLERİ */
