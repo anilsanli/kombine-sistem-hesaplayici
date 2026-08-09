@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(
-    page_title="Hipodrom Sistem Bahis Simülatörü",
+    page_title="Kombine Sistem Bahis Simülatörü",
     page_icon="🏇",
     layout="wide",
 )
@@ -158,7 +158,7 @@ def sifirla():
         st.session_state[f"status_{i}"] = "Bekliyor"
 
 
-st.title("🏇 Hipodrom Sistem Bahis Hesaplayıcı")
+st.title("🏇 Kombine Sistem Bahis Hesaplayıcı")
 st.caption(
     "Kombine kuponlarınızda sistem seçeneklerine göre tüm olası kombinasyonları ve kazançları inceleyin."
 )
@@ -497,3 +497,18 @@ else:
         "Lütfen yukarıdan en az bir sistem seçeneğini (Sistem 1, 2 vb.)"
         " işaretleyin."
     )
+
+# ---------------------------------------------------------
+# GELİŞTİRİCİ BİLGİSİ / CREDITS
+# ---------------------------------------------------------
+st.markdown("---")
+st.markdown(
+    """
+    <div style="text-align: center; padding: 10px; color: #64748b; font-size: 14px;">
+        Hazırlayan: <strong style="color: #1e293b;">Anıl Şanlı</strong> &nbsp;|&nbsp; 
+        <a href="https://www.linkedin.com/in/anilsanli" target="_blank" style="color: #0284c7; text-decoration: none; font-weight: 600;">LinkedIn</a> &nbsp;•&nbsp; 
+        <a href="https://github.com/anilsanli" target="_blank" style="color: #0284c7; text-decoration: none; font-weight: 600;">GitHub</a>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
