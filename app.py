@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide",
 )
 
-# Custom CSS ile Modern UI/UX İyileştirmeleri ve Tam Dark Mode / Dropdown Çakışma Önleyici
+# Custom CSS ile Modern UI/UX İyileştirmeleri ve Kesin Dark Mode Düzeltmeleri
 st.markdown(
     """
     <style>
@@ -38,14 +38,28 @@ st.markdown(
         -webkit-text-fill-color: #0f172a !important;
     }
 
-    /* Number input eksi/artı butonları ve alanları */
-    div[data-testid="stNumberInput"] button {
+    /* 2. NUMBER INPUT EKSİ / ARTI BUTONLARI VE İÇİNDEKİ SİMGELER FIX */
+    div[data-testid="stNumberInput"] button,
+    div[data-testid="stNumberInputContainer"] button,
+    button[aria-label="Decrease value"],
+    button[aria-label="Increase value"],
+    button[data-testid="stNumberInputStepDown"],
+    button[data-testid="stNumberInputStepUp"] {
         background-color: #f1f5f9 !important;
         color: #0f172a !important;
         border: 1px solid #cbd5e1 !important;
     }
 
-    /* 2. DROPDOWN (AÇILIR MENÜ) AÇILDIĞINDA ÇIKAN KUTU VE ELEMANLARI KESİN FIX */
+    div[data-testid="stNumberInput"] button *,
+    button[aria-label="Decrease value"] *,
+    button[aria-label="Increase value"] * {
+        color: #0f172a !important;
+        fill: #0f172a !important;
+        stroke: #0f172a !important;
+        -webkit-text-fill-color: #0f172a !important;
+    }
+
+    /* 3. DROPDOWN (AÇILIR MENÜ) FIX */
     div[data-baseweb="popover"],
     div[data-baseweb="menu"],
     ul[role="listbox"],
@@ -55,7 +69,6 @@ st.markdown(
         -webkit-text-fill-color: #0f172a !important;
     }
 
-    /* Dropdown seçeneklerinin üzerindeki liste elamanları */
     li[role="option"], 
     div[role="option"] {
         background-color: #ffffff !important;
@@ -63,7 +76,6 @@ st.markdown(
         -webkit-text-fill-color: #0f172a !important;
     }
 
-    /* Dropdown seçeneğinin üzerine gelince (Hover) veya Seçili Eleman */
     li[role="option"]:hover, 
     li[role="option"][aria-selected="true"],
     div[role="option"]:hover {
@@ -72,7 +84,7 @@ st.markdown(
         -webkit-text-fill-color: #e11d48 !important;
     }
 
-    /* 3. EXPANDER (KATLANABİLİR KARTLAR) FIX */
+    /* 4. EXPANDER (KATLANABİLİR KARTLAR) FIX */
     div[data-testid="stExpander"] {
         background-color: #ffffff !important;
         border: 1px solid #cbd5e1 !important;
@@ -90,36 +102,28 @@ st.markdown(
         color: #0f172a !important;
     }
 
-    /* 4. SIFIRLA VE GENEL BUTON FIX */
-    div.stButton > button {
+    /* 5. KUPONU SIFIRLA VE TÜM BUTONLARIN İÇ SİYAH KUTU FIXI */
+    div.stButton > button,
+    div.stButton > button *,
+    div.stButton > button div,
+    div.stButton > button p {
         background-color: #e11d48 !important;
         color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
         border: none !important;
+        box-shadow: none !important;
+    }
+
+    div.stButton > button {
         border-radius: 8px !important;
         font-weight: 600 !important;
         padding: 8px 16px !important;
     }
-    div.stButton > button:hover {
+
+    div.stButton > button:hover,
+    div.stButton > button:hover * {
         background-color: #be123c !important;
         color: #ffffff !important;
-    }
-    div.stButton > button p {
-        color: #ffffff !important;
-        -webkit-text-fill-color: #ffffff !important;
-    }
-
-    /* 5. STREAMLIT BİLGİ VE UYARI KUTULARINI (st.info, st.warning, st.error) FIXLEME */
-    div[data-testid="stAlert"] {
-        background-color: #eff6ff !important;
-        color: #1e40af !important;
-        border: 1px solid #bfdbfe !important;
-        border-radius: 8px !important;
-    }
-    div[data-testid="stAlert"] p, 
-    div[data-testid="stAlert"] span, 
-    div[data-testid="stAlert"] div {
-        color: #1e40af !important;
-        -webkit-text-fill-color: #1e40af !important;
     }
 
     /* CARD VEYA BANNER STİLLERİ */
