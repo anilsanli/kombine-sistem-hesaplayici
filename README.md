@@ -22,9 +22,9 @@
 
 ## 🛠️ Kullanılan Teknolojiler
 
-- **[Python](https://www.python.org/)** — Temel mantık ve kombinasyon hesaplama motoru (`itertools`)
-- **[Streamlit](https://streamlit.io/)** — Etkileşimli web arayüzü ve session state yönetimi
-- **[Pandas](https://pandas.pydata.org/)** — Kombinasyon tablolarının veri yapısı ve filtrelemesi
+- **Python** — Temel mantık ve kombinasyon hesaplama motoru (`itertools`)
+- **Streamlit** — Etkileşimli web arayüzü ve session state yönetimi
+- **Pandas** — Kombinasyon tablolarının veri yapısı ve filtrelemesi
 
 ---
 
@@ -33,14 +33,20 @@
 Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
 
 1. Depoyu klonlayın:
+   ```bash
    git clone https://github.com/anilsanli/kombine-sistem-hesaplayici.git
    cd kombine-sistem-hesaplayici
+   ```
 
 2. Gerekli paketleri yükleyin:
+   ```bash
    pip install -r requirements.txt
+   ```
 
 3. Uygulamayı başlatın:
+   ```bash
    streamlit run app.py
+   ```
 
 ---
 
@@ -52,10 +58,20 @@ Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları i
 ├── app.py               # Uygulamanın tüm arayüz ve hesaplama kodları
 ├── requirements.txt     # Bağımlılık listesi (streamlit, pandas)
 └── README.md            # Proje dokümantasyonu
+```
 
 ---
 
-## 💻 Geliştirici
+## 👨‍💻 Geliştirici
 
-Anıl Şanlı
-Data Analyst
+**Anıl Şanlı**  
+Data Analyst / Data Science Masters Student
+
+- **LinkedIn:** [https://www.linkedin.com/in/anilsanli](https://www.linkedin.com/in/anilsanli)
+- **GitHub:** [https://github.com/anilsanli](https://github.com/anilsanli)
+
+---
+
+## 📄 Lisans
+
+Bu proje MIT Lisansı ile lisanslanmıştır.
