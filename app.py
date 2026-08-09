@@ -1,7 +1,6 @@
 from itertools import combinations
 import pandas as pd
 import streamlit as st
-import streamlit_analytics2 as streamlit_analytics
 
 st.set_page_config(
     page_title="Kombine Sistem Bahis Simülatörü",
@@ -9,10 +8,21 @@ st.set_page_config(
     layout="wide",
 )
 
-# Secrets içinden şifreyi al, yoksa varsayılan şifreyi kullan
-analytics_pwd = st.secrets.get("ANALYTICS_PASSWORD", "anilsanli123")
+# Güvenli Analitik İmport ve Kurulumu
+try:
+    import streamlit_analytics2 as streamlit_analytics
 
-with streamlit_analytics.track(password=analytics_pwd):
+    analytics_pwd = st.secrets.get("ANALYTICS_PASSWORD", "")
+    if analytics_pwd:
+        analytics_context = streamlit_analytics.track(password=analytics_pwd)
+    else:
+        analytics_context = streamlit_analytics.track()
+except Exception:
+    from contextlib import nullcontext
+
+    analytics_context = nullcontext()
+
+with analytics_context:
 
     # Custom CSS - UI/UX & Renklendirme Düzeltmeleri
     st.markdown(
