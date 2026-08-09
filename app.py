@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide",
 )
 
-# Custom CSS ile Modern UI/UX İyileştirmeleri ve Dark Mode Okunurluk Update
+# Custom CSS ile Modern UI/UX İyileştirmeleri ve Tam Dark Mode Çakışma Önleyici
 st.markdown(
     """
     <style>
@@ -17,12 +17,71 @@ st.markdown(
         background-color: #f8f9fa !important;
         color: #1f2937 !important;
     }
-    /* Tüm başlık, etiket ve metinlerin dark modda beyaz olmasını engelleme */
+
+    /* Tüm genel metinlerin rengini sabitleme */
     h1, h2, h3, h4, h5, h6, p, label, span, div {
         color: #1f2937 !important;
     }
 
-    /* BUTON STİLLERİNİ FIXLEME (Sıfırla butonu vb.) */
+    /* 1. INPUT, SELECTBOX & NUMBER INPUT KUTULARI FIX */
+    div[data-baseweb="input"], 
+    div[data-baseweb="select"] > div {
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+    }
+
+    /* Kutuların içindeki metinler ve sayılar */
+    input, select, textarea {
+        color: #0f172a !important;
+        background-color: #ffffff !important;
+        -webkit-text-fill-color: #0f172a !important;
+    }
+
+    /* Number input eksi/artı butonları ve alanları */
+    div[data-testid="stNumberInput"] button {
+        background-color: #f1f5f9 !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+    }
+
+    /* 2. DROPDOWN (SELECTBOX) AÇILIR MENÜSÜ FIX */
+    div[data-baseweb="popover"], 
+    div[data-baseweb="menu"], 
+    ul[role="listbox"] {
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+    }
+
+    li[role="option"] {
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+    }
+
+    li[role="option"]:hover, li[role="option"][aria-selected="true"] {
+        background-color: #f1f5f9 !important;
+        color: #e11d48 !important;
+    }
+
+    /* 3. EXPANDER (KATLANABİLİR KARTLAR) FIX */
+    div[data-testid="stExpander"] {
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 10px !important;
+        margin-bottom: 12px !important;
+    }
+
+    div[data-testid="stExpander"] details summary {
+        background-color: #f8fafc !important;
+        color: #0f172a !important;
+        border-radius: 10px !important;
+    }
+
+    div[data-testid="stExpander"] details summary * {
+        color: #0f172a !important;
+    }
+
+    /* 4. SIFIRLA VE GENEL BUTON FIX */
     div.stButton > button {
         background-color: #e11d48 !important;
         color: #ffffff !important;
@@ -30,37 +89,28 @@ st.markdown(
         border-radius: 8px !important;
         font-weight: 600 !important;
         padding: 8px 16px !important;
-        transition: all 0.2s ease-in-out !important;
     }
     div.stButton > button:hover {
         background-color: #be123c !important;
         color: #ffffff !important;
-        box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3) !important;
     }
     div.stButton > button p {
         color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
     }
 
-    /* INPUT VE NUMBER INPUT KUTULARINI FIXLEME */
-    div[data-baseweb="input"] {
-        background-color: #ffffff !important;
-        border-color: #e2e8f0 !important;
-    }
-    input {
-        color: #1f2937 !important;
-    }
-
+    /* CARD VEYA BANNER STİLLERİ */
     .horse-card {
         background-color: #ffffff !important;
         border-radius: 10px;
         padding: 15px;
-        border-left: 5px solid #ff4b4b;
+        border-left: 5px solid #e11d48;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         margin-bottom: 15px;
     }
     .summary-banner {
         background-color: #ffffff !important;
-        border: 1px solid #e0e0e0;
+        border: 1px solid #e2e8f0;
         border-left: 6px solid #e11d48;
         border-radius: 8px;
         padding: 14px 24px;
@@ -90,20 +140,21 @@ st.markdown(
     }
     .total-payout-box h3, .total-payout-box h1, .total-payout-box p, .total-payout-box span {
         color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
     }
     </style>
 """,
     unsafe_allow_html=True,
 )
 
-# SESSION STATE BAŞLANGIÇ DEĞERLERİ & SIFIRLAMA
+# ---------------------------------------------------------
+# SESSION STATE BAŞLANGIÇ DEĞERLERİ & SIFIRLAMA MANTIĞI
 # ---------------------------------------------------------
 if "reset_trigger" not in st.session_state:
     st.session_state.reset_trigger = False
 
 
 def sifirla():
-    # Tüm dinamik girdileri sıfırla
     st.session_state["radio_col_count"] = 4
     st.session_state["sys1"] = True
     st.session_state["sys2"] = True
@@ -123,7 +174,8 @@ st.caption(
     "Kombine kuponlarınızda sistem seçeneklerine göre tüm olası kombinasyonları ve kazançları inceleyin."
 )
 
-# KUPON YAPISI VE SİSTEM SEÇİMİ
+# ---------------------------------------------------------
+# ADIM 1: KUPON YAPISI VE SİSTEM SEÇİMİ
 # ---------------------------------------------------------
 head_col1, head_col2 = st.columns([4, 1])
 with head_col1:
@@ -201,6 +253,7 @@ st.markdown(
 
 st.divider()
 
+# ---------------------------------------------------------
 # ADIM 2: AT DETAYLARI VE ORAN GİRDİLERİ
 # ---------------------------------------------------------
 st.markdown("### 2. At ve Koşu Detayları")
@@ -218,7 +271,6 @@ at_data = []
 grid_cols = st.columns(col_count)
 
 for i in range(col_count):
-    # Sayfa ilk yüklendiğinde varsayılan session_state tanımları
     if f"name_{i}" not in st.session_state:
         st.session_state[f"name_{i}"] = ""
     if f"type_{i}" not in st.session_state:
@@ -234,7 +286,7 @@ for i in range(col_count):
         st.markdown(
             f"""
         <div class="horse-card">
-            <h4 style="margin:0; color:#1f2937;">{i+1}. At Seçimi</h4>
+            <h4 style="margin:0; color:#1f2937;">{i + 1}. At Seçimi</h4>
         </div>
         """,
             unsafe_allow_html=True,
@@ -242,7 +294,7 @@ for i in range(col_count):
 
         at_adi = st.text_input(
             "At Adı (İsteğe Bağlı)",
-            placeholder=f"{i+1}. At",
+            placeholder=f"{i + 1}. At",
             key=f"name_{i}",
         )
         bahis_turu = st.selectbox(
@@ -262,7 +314,7 @@ for i in range(col_count):
             key=f"status_{i}",
         )
 
-        label_name = at_adi.strip() if at_adi.strip() != "" else f"{i+1}. At"
+        label_name = at_adi.strip() if at_adi.strip() != "" else f"{i + 1}. At"
 
         at_data.append(
             {
@@ -276,6 +328,8 @@ for i in range(col_count):
 
 st.divider()
 
+
+# ---------------------------------------------------------
 # KOMBİNASYON HESAPLAMA MOTORU
 # ---------------------------------------------------------
 def hesapla_sistem_gruplari(at_listesi):
@@ -344,6 +398,8 @@ def highlight_rows(row):
         ] * len(row)
     return [""] * len(row)
 
+
+# ---------------------------------------------------------
 # ADIM 3: SONUÇLAR VE KOMBİNASYON LİSTESİ
 # ---------------------------------------------------------
 st.markdown("### 3. Kombinasyon ve İkramiye Detayları")
