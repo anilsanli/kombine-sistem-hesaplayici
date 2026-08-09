@@ -53,9 +53,9 @@ Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları i
 ├── requirements.txt     # Bağımlılık listesi (streamlit, pandas)
 └── README.md            # Proje dokümantasyonu
 
+---
+
 ## 💻 Geliştirici
 
 Anıl Şanlı
-
 Data Analyst
-
