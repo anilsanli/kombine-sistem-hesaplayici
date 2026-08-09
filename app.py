@@ -508,6 +508,20 @@ with analytics_context:
             " işaretleyin."
         )
 
+    # SORUMLULUK REDDİ VE YASAL UYARI
+    st.markdown(
+        """
+        <div style="background-color: #fffbebf5; border: 1px solid #fef3c7; border-left: 5px solid #f59e0b; padding: 14px; border-radius: 8px; margin-top: 25px; margin-bottom: 15px;">
+            <p style="margin: 0; font-size: 13px; color: #b45309 !important; font-weight: 600;">⚠️ Yasal Uyarı ve Sorumluluk Reddi</p>
+            <p style="margin-top: 6px; margin-bottom: 0; font-size: 12px; color: #78350f !important; line-height: 1.5;">
+                Bu simülatör, herhangi bir bahis sitesi veya şans oyunları otoritesi ile resmi bir bağı bulunmaksızın bilgi ve kolaylık sağlama amacıyla bağımsız olarak geliştirilmiştir. 
+                Hesaplanan tüm ikramiye ve kolon tutarları kullanıcının girdiği veriler doğrultusunda simüle edilir. Oran değişiklikleri, kesintiler ve nihai bilet sonuçları baş bayi/resmi otorite kurallarına tabidir; sunulan verilerin resmi bir garantisi veya bağlayıcılığı yoktur.
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
     # GELİŞTİRİCİ BİLGİSİ / CREDITS
     st.markdown("---")
     st.markdown(
