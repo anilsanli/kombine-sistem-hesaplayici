@@ -8,11 +8,10 @@ st.set_page_config(
     layout="wide",
 )
 
-# Custom CSS - Dark Mode Override & Tooltip / Popover Fixes
+# Custom CSS - UI/UX & Renklendirme Düzeltmeleri
 st.markdown(
     """
     <style>
-    /* 1. UYGULAMA VE GENEL METİNLER */
     .stApp {
         background-color: #f8f9fa !important;
         color: #1f2937 !important;
@@ -22,31 +21,13 @@ st.markdown(
         color: #1f2937 !important;
     }
 
-    /* 2. TOOLTIP / BİLGİ BALONCUKLARI VE HELP SİMGELERİ KESİN FIX */
     div[data-baseweb="tooltip"],
     div[role="tooltip"],
-    div[data-testid="stTooltipContent"],
-    .stTooltipHoverTarget {
+    div[data-testid="stTooltipContent"] {
         background-color: #0f172a !important;
         color: #ffffff !important;
-        border-radius: 6px !important;
     }
 
-    div[data-baseweb="tooltip"] *,
-    div[role="tooltip"] *,
-    div[data-testid="stTooltipContent"] * {
-        background-color: transparent !important;
-        color: #ffffff !important;
-        -webkit-text-fill-color: #ffffff !important;
-    }
-
-    /* Help simgesi ikonu (?) */
-    div[data-testid="stMarkdownContainer"] svg,
-    div[data-testid="stTooltipHoverTarget"] svg {
-        fill: #64748b !important;
-    }
-
-    /* 3. INPUT, SELECTBOX & NUMBER INPUT KUTULARI */
     div[data-baseweb="input"], 
     div[data-baseweb="select"] > div {
         background-color: #ffffff !important;
@@ -60,26 +41,12 @@ st.markdown(
         -webkit-text-fill-color: #0f172a !important;
     }
 
-    /* Eksi/Artı Butonları */
-    div[data-testid="stNumberInput"] button,
-    div[data-testid="stNumberInputContainer"] button,
-    button[aria-label="Decrease value"],
-    button[aria-label="Increase value"] {
+    div[data-testid="stNumberInput"] button {
         background-color: #f1f5f9 !important;
         color: #0f172a !important;
         border: 1px solid #cbd5e1 !important;
     }
 
-    div[data-testid="stNumberInput"] button *,
-    button[aria-label="Decrease value"] *,
-    button[aria-label="Increase value"] * {
-        color: #0f172a !important;
-        fill: #0f172a !important;
-        stroke: #0f172a !important;
-        -webkit-text-fill-color: #0f172a !important;
-    }
-
-    /* 4. DROPDOWN (AÇILIR MENÜ) FIX */
     div[data-baseweb="popover"],
     div[data-baseweb="menu"],
     ul[role="listbox"],
@@ -89,21 +56,13 @@ st.markdown(
         -webkit-text-fill-color: #0f172a !important;
     }
 
-    li[role="option"], div[role="option"] {
-        background-color: #ffffff !important;
-        color: #0f172a !important;
-        -webkit-text-fill-color: #0f172a !important;
-    }
-
     li[role="option"]:hover, 
-    li[role="option"][aria-selected="true"],
-    div[role="option"]:hover {
+    li[role="option"][aria-selected="true"] {
         background-color: #f1f5f9 !important;
         color: #e11d48 !important;
         -webkit-text-fill-color: #e11d48 !important;
     }
 
-    /* 5. EXPANDER FIX */
     div[data-testid="stExpander"] {
         background-color: #ffffff !important;
         border: 1px solid #cbd5e1 !important;
@@ -117,35 +76,19 @@ st.markdown(
         border-radius: 10px !important;
     }
 
-    div[data-testid="stExpander"] details summary * {
-        color: #0f172a !important;
-    }
-
-    /* 6. BUTON HİZALAMALARI VE SIFIRLA BUTONU */
     div.stButton > button,
-    div.stButton > button *,
-    div.stButton > button div,
-    div.stButton > button p {
+    div.stButton > button * {
         background-color: #e11d48 !important;
         color: #ffffff !important;
         -webkit-text-fill-color: #ffffff !important;
         border: none !important;
-        box-shadow: none !important;
-    }
-
-    div.stButton > button {
-        border-radius: 8px !important;
-        font-weight: 600 !important;
-        padding: 8px 16px !important;
     }
 
     div.stButton > button:hover,
     div.stButton > button:hover * {
         background-color: #be123c !important;
-        color: #ffffff !important;
     }
 
-    /* BİLGİ KARTLARI */
     .horse-card {
         background-color: #ffffff !important;
         border-radius: 10px;
@@ -212,7 +155,7 @@ def sifirla():
         st.session_state[f"name_{i}"] = ""
         st.session_state[f"type_{i}"] = "Ganyan"
         st.session_state[f"oran_{i}"] = 1.00
-        st.session_state[f"status_{i}"] = "Bekliyor / Geldi"
+        st.session_state[f"status_{i}"] = "Bekliyor"
 
 
 st.title("🏇 Hipodrom Sistem Bahis Hesaplayıcı")
@@ -310,6 +253,12 @@ bahis_turleri = [
     "İkili Bahis",
     "Sıralı İkili Bahis",
 ]
+durum_secenekleri = [
+    "Bekliyor",
+    "Geldi (Kazandı)",
+    "Yattı (Kaybetti)",
+    "Koşmaz (İade)",
+]
 at_data = []
 
 grid_cols = st.columns(col_count)
@@ -324,7 +273,7 @@ for i in range(col_count):
             i if i < 4 else 0
         ]
     if f"status_{i}" not in st.session_state:
-        st.session_state[f"status_{i}"] = "Bekliyor / Geldi"
+        st.session_state[f"status_{i}"] = "Bekliyor"
 
     with grid_cols[i]:
         st.markdown(
@@ -354,7 +303,7 @@ for i in range(col_count):
         )
         durum = st.selectbox(
             "Sonuç Durumu",
-            ["Bekliyor / Geldi", "Yattı (Kaybetti)", "Koşmaz (İade)"],
+            durum_secenekleri,
             key=f"status_{i}",
         )
 
@@ -374,7 +323,7 @@ st.divider()
 
 
 # ---------------------------------------------------------
-# KOMBİNASYON HESAPLAMA MOTORU
+# KOMBİNASYON HESAPLAMA MOTORU (3 DURUMLU)
 # ---------------------------------------------------------
 def hesapla_sistem_gruplari(at_listesi):
     sistem_haritasi = {
@@ -392,37 +341,41 @@ def hesapla_sistem_gruplari(at_listesi):
 
             for comb in combinations(at_listesi, r):
                 kolon_orani = 1.0
-                kazandi_mi = True
+                has_yatti = False
+                has_bekliyor = False
 
                 at_detaylari = []
                 for at in comb:
                     at_detaylari.append(f"{at['ad']} ({at['bahis_turu']})")
+
                     if at["durum"] == "Yattı (Kaybetti)":
-                        kazandi_mi = False
-                        kolon_orani *= 0
+                        has_yatti = True
+                    elif at["durum"] == "Bekliyor":
+                        has_bekliyor = True
+                        kolon_orani *= at["oran"]
                     elif at["durum"] == "Koşmaz (İade)":
                         kolon_orani *= 1.0
-                    else:
+                    else:  # Geldi (Kazandı)
                         kolon_orani *= at["oran"]
+
+                if has_yatti:
+                    durum_str = "❌ Kaybetti"
+                    kazanc = 0.00
+                elif has_bekliyor:
+                    durum_str = "⏳ Bekliyor"
+                    kazanc = round(kolon_orani * misli, 2)
+                else:
+                    durum_str = "✅ Kazandı"
+                    kazanc = round(kolon_orani * misli, 2)
 
                 kombinasyon_listesi.append(
                     {
                         "Kombinasyon Detayı": " ➔ ".join(at_detaylari),
                         "Kolon Oranı": (
-                            round(kolon_orani, 2) if kazandi_mi else 0.00
+                            round(kolon_orani, 2) if not has_yatti else 0.00
                         ),
-                        "Durum": (
-                            "✅ Kazandı"
-                            if (kazandi_mi and kolon_orani > 0)
-                            else (
-                                "❌ Kaybetti"
-                                if not kazandi_mi
-                                else "⏳ Bekliyor/İade"
-                            )
-                        ),
-                        "Tahmini Kazanç": (
-                            round(kolon_orani * misli, 2) if kazandi_mi else 0.00
-                        ),
+                        "Durum": durum_str,
+                        "Tahmini Kazanç": kazanc,
                     }
                 )
 
@@ -434,7 +387,11 @@ def hesapla_sistem_gruplari(at_listesi):
 def highlight_rows(row):
     if row["Durum"] == "✅ Kazandı":
         return [
-            "background-color: #ecfdf5; color: #065f46; font-weight: 500;"
+            "background-color: #ecfdf5; color: #065f46; font-weight: 600;"
+        ] * len(row)
+    elif row["Durum"] == "⏳ Bekliyor":
+        return [
+            "background-color: #fefce8; color: #854d0e; font-weight: 500;"
         ] * len(row)
     elif row["Durum"] == "❌ Kaybetti":
         return [
@@ -444,21 +401,33 @@ def highlight_rows(row):
 
 
 # ---------------------------------------------------------
-# ADIM 3: SONUÇLAR VE KOMBİNASYON LİSTESİ
+# ADIM 3: SONUÇLAR VE İKRAMİYE BİLGİSİ
 # ---------------------------------------------------------
 st.markdown("### 3. Kombinasyon ve İkramiye Detayları")
 
 gruplar = hesapla_sistem_gruplari(at_data)
 
 if gruplar:
-    toplam_kazanc = 0.0
+    kesinlesen_kazanc = 0.0
+    bekleyen_potansiyel_kazanc = 0.0
 
     for sistem_no, df in gruplar.items():
-        grup_kazanc = df["Tahmini Kazanç"].sum()
-        toplam_kazanc += grup_kazanc
-        kazanan_sayisi = len(df[df["Durum"] == "✅ Kazandı"])
+        grup_kesin = df[df["Durum"] == "✅ Kazandı"]["Tahmini Kazanç"].sum()
+        grup_bekleyen = df[df["Durum"] == "⏳ Bekliyor"][
+            "Tahmini Kazanç"
+        ].sum()
 
-        expander_title = f"🎯 Sistem {sistem_no} ({sistem_no}'li Kombinasyonlar)  |  {len(df)} Kolon  |  Kazanan: {kazanan_sayisi}  |  Grup Kazancı: {grup_kazanc:,.2f} TL"
+        kesinlesen_kazanc += grup_kesin
+        bekleyen_potansiyel_kazanc += grup_bekleyen
+
+        kazanan_sayisi = len(df[df["Durum"] == "✅ Kazandı"])
+        bekleyen_sayisi = len(df[df["Durum"] == "⏳ Bekliyor"])
+
+        expander_title = (
+            f"🎯 Sistem {sistem_no} ({sistem_no}'li Kombinasyonlar)  | "
+            f" Toplam: {len(df)} Kolon  |  ✅ Kazanan: {kazanan_sayisi}  |  ⏳"
+            f" Bekleyen: {bekleyen_sayisi}"
+        )
 
         with st.expander(expander_title, expanded=True):
             styled_df = df.style.apply(highlight_rows, axis=1).format(
@@ -480,18 +449,24 @@ if gruplar:
                         "Sonuç", width="small"
                     ),
                     "Tahmini Kazanç": st.column_config.TextColumn(
-                        "Tahmini Kazanç (TL)", width="medium"
+                        "Kazanç / Potansiyel (TL)", width="medium"
                     ),
                 },
             )
 
-    net_kar_zarar = toplam_kazanc - kupon_bedeli
+    toplam_olasi_kazanc = kesinlesen_kazanc + bekleyen_potansiyel_kazanc
+    net_kar_zarar = kesinlesen_kazanc - kupon_bedeli
+
     if net_kar_zarar > 0:
         kar_durum_metni = (
-            f"<span style='color:#34d399;'>Net Kâr: +{net_kar_zarar:,.2f} TL</span>"
+            f"<span style='color:#34d399;'>Mevcut Net Kâr: +{net_kar_zarar:,.2f}"
+            " TL</span>"
         )
     elif net_kar_zarar < 0:
-        kar_durum_metni = f"<span style='color:#f87171;'>Net Zarar: {net_kar_zarar:,.2f} TL</span>"
+        kar_durum_metni = (
+            "<span style='color:#f87171;'>Mevcut Net Zarar:"
+            f" {net_kar_zarar:,.2f} TL</span>"
+        )
     else:
         kar_durum_metni = (
             "<span style='color:#9ca3af;'>Başabaş (0.00 TL)</span>"
@@ -500,9 +475,18 @@ if gruplar:
     st.markdown(
         f"""
         <div class="total-payout-box">
-            <h3 style="margin:0; font-size: 20px; color: #a5f3fc; font-weight:500;">🏆 TOPLAM KAZANÇ DURUMU</h3>
-            <h1 style="margin:12px 0; font-size: 42px; color: #34d399;">{toplam_kazanc:,.2f} TL</h1>
-            <p style="margin:0; font-size: 16px; color: #cbd5e1;">Kupon Bedeli: {kupon_bedeli:,.2f} TL &nbsp;|&nbsp; {kar_durum_metni}</p>
+            <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
+                <div>
+                    <h3 style="margin:0; font-size: 16px; color: #a5f3fc; font-weight:500;">✅ GARANTİLENEN KAZANÇ</h3>
+                    <h1 style="margin:8px 0; font-size: 36px; color: #34d399;">{kesinlesen_kazanc:,.2f} TL</h1>
+                </div>
+                <div style="border-left: 1px solid #334155; height: 50px; margin: 0 20px;"></div>
+                <div>
+                    <h3 style="margin:0; font-size: 16px; color: #fef08a; font-weight:500;">⏳ MAKSİMUM OLASI KAZANÇ</h3>
+                    <h1 style="margin:8px 0; font-size: 36px; color: #facc15;">{toplam_olasi_kazanc:,.2f} TL</h1>
+                </div>
+            </div>
+            <p style="margin-top:16px; font-size: 15px; color: #cbd5e1;">Kupon Bedeli: {kupon_bedeli:,.2f} TL &nbsp;|&nbsp; {kar_durum_metni}</p>
         </div>
     """,
         unsafe_allow_html=True,
@@ -510,5 +494,6 @@ if gruplar:
 
 else:
     st.info(
-        "Lütfen yukarıdan en az bir sistem seçeneğini (Sistem 1, 2 vb.) işaretleyin."
+        "Lütfen yukarıdan en az bir sistem seçeneğini (Sistem 1, 2 vb.)"
+        " işaretleyin."
     )
