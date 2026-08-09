@@ -8,15 +8,21 @@ st.set_page_config(
     layout="wide",
 )
 
-# Custom CSS ile Modern UI/UX İyileştirmeleri
+# Custom CSS ile Modern UI/UX İyileştirmeleri ve Dark Mode Okunurluk Update
 st.markdown(
     """
     <style>
+    /* Arka planı açık moda sabitleme */
     .stApp {
-        background-color: #f8f9fa;
+        background-color: #f8f9fa !important;
+        color: #1f2937 !important;
+    }
+    /* Tüm başlık, etiket ve metinlerin dark modda beyaz olmasını engelleme */
+    h1, h2, h3, h4, h5, h6, p, label, span, div {
+        color: #1f2937 !important;
     }
     .horse-card {
-        background-color: #ffffff;
+        background-color: #ffffff !important;
         border-radius: 10px;
         padding: 15px;
         border-left: 5px solid #ff4b4b;
@@ -24,7 +30,7 @@ st.markdown(
         margin-bottom: 15px;
     }
     .summary-banner {
-        background-color: #ffffff;
+        background-color: #ffffff !important;
         border: 1px solid #e0e0e0;
         border-left: 6px solid #e11d48;
         border-radius: 8px;
@@ -39,28 +45,22 @@ st.markdown(
     .summary-item {
         font-size: 16px;
         font-weight: 600;
-        color: #1f2937;
+        color: #1f2937 !important;
     }
     .summary-value {
-        color: #e11d48;
+        color: #e11d48 !important;
         font-weight: 700;
     }
     .total-payout-box {
-        background-color: #0f172a;
-        color: #ffffff;
+        background-color: #0f172a !important;
         border-radius: 12px;
         padding: 24px;
         text-align: center;
         margin-top: 30px;
         box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
     }
-    .streamlit-expanderHeader {
-        font-size: 17px !important;
-        font-weight: 600 !important;
-        color: #1e293b !important;
-        background-color: #ffffff !important;
-        border-radius: 8px !important;
-        border: 1px solid #e2e8f0 !important;
+    .total-payout-box h3, .total-payout-box h1, .total-payout-box p, .total-payout-box span {
+        color: #ffffff !important;
     }
     </style>
 """,
