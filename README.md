@@ -1,10 +1,10 @@
-# 🏇 Hipodrom Sistem Bahis Simülatörü
+# 🏇 Kombine Sistem Bahis Simülatörü
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io)
 ![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-**Hipodrom Sistem Bahis Simülatörü**, at yarışı ve spor bahislerindeki kombine sistem kuponlarının olası tüm kombinasyonlarını, kolon bedellerini ve anlık kazanç senaryolarını hesaplamak için geliştirilmiş etkileşimli bir web uygulamasıdır.
+**Kombine Sistem Bahis Simülatörü**, at yarışı ve spor bahislerindeki kombine sistem kuponlarının olası tüm kombinasyonlarını, kolon bedellerini ve anlık kazanç senaryolarını hesaplamak için geliştirilmiş etkileşimli bir web uygulamasıdır.
 
 ---
 
