@@ -3,12 +3,12 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(
-    page_title="Kombine Sistem Bahis Simülatörü",
+    page_title="Hipodrom Sistem Bahis Simülatörü",
     page_icon="🏇",
     layout="wide",
 )
 
-# Custom CSS ile Modern UI/UX İyileştirmeleri ve Tam Dark Mode Çakışma Önleyici
+# Custom CSS ile Modern UI/UX İyileştirmeleri ve Tam Dark Mode / Dropdown Çakışma Önleyici
 st.markdown(
     """
     <style>
@@ -45,22 +45,31 @@ st.markdown(
         border: 1px solid #cbd5e1 !important;
     }
 
-    /* 2. DROPDOWN (SELECTBOX) AÇILIR MENÜSÜ FIX */
-    div[data-baseweb="popover"], 
-    div[data-baseweb="menu"], 
-    ul[role="listbox"] {
-        background-color: #ffffff !important;
-        border: 1px solid #cbd5e1 !important;
-    }
-
-    li[role="option"] {
+    /* 2. DROPDOWN (AÇILIR MENÜ) AÇILDIĞINDA ÇIKAN KUTU VE ELEMANLARI KESİN FIX */
+    div[data-baseweb="popover"],
+    div[data-baseweb="menu"],
+    ul[role="listbox"],
+    div[data-baseweb="popover"] * {
         background-color: #ffffff !important;
         color: #0f172a !important;
+        -webkit-text-fill-color: #0f172a !important;
     }
 
-    li[role="option"]:hover, li[role="option"][aria-selected="true"] {
+    /* Dropdown seçeneklerinin üzerindeki liste elamanları */
+    li[role="option"], 
+    div[role="option"] {
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+        -webkit-text-fill-color: #0f172a !important;
+    }
+
+    /* Dropdown seçeneğinin üzerine gelince (Hover) veya Seçili Eleman */
+    li[role="option"]:hover, 
+    li[role="option"][aria-selected="true"],
+    div[role="option"]:hover {
         background-color: #f1f5f9 !important;
         color: #e11d48 !important;
+        -webkit-text-fill-color: #e11d48 !important;
     }
 
     /* 3. EXPANDER (KATLANABİLİR KARTLAR) FIX */
@@ -169,7 +178,7 @@ def sifirla():
         st.session_state[f"status_{i}"] = "Bekliyor / Geldi"
 
 
-st.title("🏇 Kombine Sistem Bahis Hesaplayıcı")
+st.title("🏇 Hipodrom Sistem Bahis Hesaplayıcı")
 st.caption(
     "Kombine kuponlarınızda sistem seçeneklerine göre tüm olası kombinasyonları ve kazançları inceleyin."
 )
