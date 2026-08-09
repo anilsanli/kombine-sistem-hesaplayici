@@ -21,6 +21,35 @@ st.markdown(
     h1, h2, h3, h4, h5, h6, p, label, span, div {
         color: #1f2937 !important;
     }
+
+    /* BUTON STİLLERİNİ FIXLEME (Sıfırla butonu vb.) */
+    div.stButton > button {
+        background-color: #e11d48 !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        padding: 8px 16px !important;
+        transition: all 0.2s ease-in-out !important;
+    }
+    div.stButton > button:hover {
+        background-color: #be123c !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3) !important;
+    }
+    div.stButton > button p {
+        color: #ffffff !important;
+    }
+
+    /* INPUT VE NUMBER INPUT KUTULARINI FIXLEME */
+    div[data-baseweb="input"] {
+        background-color: #ffffff !important;
+        border-color: #e2e8f0 !important;
+    }
+    input {
+        color: #1f2937 !important;
+    }
+
     .horse-card {
         background-color: #ffffff !important;
         border-radius: 10px;
