@@ -1,6 +1,6 @@
 # 🏇 Kombine Sistem Bahis Simülatörü
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://kombine-sistem-hesaplayici.streamlit.app)
 ![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -10,21 +10,24 @@
 
 ## 🚀 Öne Çıkan Özellikler
 
-- **🎯 Esnek Sistem Hesaplama:** Kuponda yer alan at sayısına göre Sistem 1, Sistem 2, Sistem 3 ve Sistem 4 kombinasyonlarını anında üretir.
-- **📊 3 Aşamalı Durum Takibi:** Her bir at için *Geldi (Kazandı)*, *Bekliyor*, *Yattı (Kaybetti)* ve *Koşmaz (İade)* durumları seçilebilir.
-- **💰 İki Aşamalı İkramiye Analizi:**
-  - **✅ Garantilenen Kazanç:** Sonucu netleşen kombinasyonlardan elde edilen kesinleşmiş tutar.
-  - **⏳ Maksimum Olası Kazanç:** Koşusu devam eden/bekleyen tüm atların gelmesi durumunda ulaşılabilecek toplam ikramiye.
-- **🎨 Görsel ve İntuitif UI:** Kazanan (yeşil), bekleyen (sarı) ve yatan (kırmızı) kombinasyonlar için dinamik tablo renklendirmesi.
-- **🌗 Tam Cihaz Uyumlu Tasarım:** Karanlık mod (Dark Mode) ve açık mod çakışmalarını önleyen özel CSS ve tema mimarisi.
+- **🎯 7 Koşuya Kadar Gelişmiş Sistem Motoru:** Kupondaki at sayısına göre (2 - 7 arası) **Sistem 1'den Sistem 7'ye** tüm kombinasyonları anında üretir.
+- **🎟️ Çift Görünüm Modu:** Kombinasyonları hem modern **Dijital Bilet (Kart)** mimarisinde hem de **Genişletilmiş Tablo** formatında inceleme imkanı.
+- **🏷️ Akıllı Durum Rozetleri (Status-Aware):** Her at ve kolon için *Geldi (Kazandı ✅)*, *Bekliyor (⏳)*, *Yattı (Kaybetti ❌)* ve *Koşmaz (İade ↩️)* durumlarının bireysel ve zincirleme görselleştirilmesi.
+- **🔍 Akıllı Filtreleme:** Canlı kalan kolonları (*Kazanan + Bekleyen*), yalnızca kazananları veya kaybeden kolonları tek tıkla filtreleme.
+- **💰 Gelişmiş Finansal Kokpit:**
+  - **✅ Garantilenen Kazanç:** Sonucu kesinleşen kombinasyonlardan elde edilen net tutar.
+  - **⏳ Maksimum Olası Kazanç:** Devam eden/bekleyen tüm atların gelmesi durumundaki potansiyel ikramiye.
+  - **📈 Dinamik ROI & Net Bakiye Analizi:** Kupon maliyetine oranla anlık kâr/zarar ve getiri yüzdesi (% ROI).
+- **✨ Dahili Rehber & Versiyon Notları:** Uygulama içi modal pencereler (`@st.dialog`) ile kullanım rehberi ve sürüm notları.
 
 ---
 
 ## 🛠️ Kullanılan Teknolojiler
 
 - **Python** — Temel mantık ve kombinasyon hesaplama motoru (`itertools`)
-- **Streamlit** — Etkileşimli web arayüzü ve session state yönetimi
-- **Pandas** — Kombinasyon tablolarının veri yapısı ve filtrelemesi
+- **Streamlit** — Etkileşimli web arayüzü, Session State ve Modal yönetimi
+- **Pandas** — Kombinasyon matrislerinin veri yapısı ve filtrelemesi
+- **Streamlit-Analytics2** — Gizlilik odaklı kullanım analitiği
 
 ---
 
@@ -34,44 +37,5 @@ Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları i
 
 1. Depoyu klonlayın:
    ```bash
-   git clone https://github.com/anilsanli/kombine-sistem-hesaplayici.git
+   git clone [https://github.com/anilsanli/kombine-sistem-hesaplayici.git](https://github.com/anilsanli/kombine-sistem-hesaplayici.git)
    cd kombine-sistem-hesaplayici
-   ```
-
-2. Gerekli paketleri yükleyin:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Uygulamayı başlatın:
-   ```bash
-   streamlit run app.py
-   ```
-
----
-
-## 📂 Proje Yapısı
-
-```text
-├── .streamlit/
-│   └── config.toml      # Açık tema zorlaması ve arayüz konfigürasyonu
-├── app.py               # Uygulamanın tüm arayüz ve hesaplama kodları
-├── requirements.txt     # Bağımlılık listesi (streamlit, pandas)
-└── README.md            # Proje dokümantasyonu
-```
-
----
-
-## 👨‍💻 Geliştirici
-
-**Anıl Şanlı**  
-Data Analyst / Data Science Masters Student
-
-- **LinkedIn:** [https://www.linkedin.com/in/anilsanli](https://www.linkedin.com/in/anilsanli)
-- **GitHub:** [https://github.com/anilsanli](https://github.com/anilsanli)
-
----
-
-## 📄 Lisans
-
-Bu proje MIT Lisansı ile lisanslanmıştır.
