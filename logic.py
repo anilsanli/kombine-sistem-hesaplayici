@@ -39,17 +39,17 @@ KOLON_BIRIM_FIYATI = 1.0
 AKTIF_MAKS_AT_SAYISI = 4
 TEKNIK_MAKS_AT_SAYISI = 7
 
-# Kombinasyon/rozet durumlarına göre görsel eşlemeler
-_CHIP_BILGISI = {
-    DURUM_GELDI: ("chip-at-won", "✅"),
-    DURUM_YATTI: ("chip-at-lost", "❌"),
-    DURUM_IADE: ("chip-at-refund", "↩️"),
+# Durum -> ikon eşlemesi
+_DURUM_IKON = {
+    DURUM_GELDI: "✅",
+    DURUM_YATTI: "❌",
+    DURUM_IADE: "↩️",
 }
 
 
-def at_chip_bilgisi(durum):
-    """Bir atın durumuna göre (css_class, icon) döndürür."""
-    return _CHIP_BILGISI.get(durum, ("chip-at-pending", "⏳"))
+def durum_ikon(durum):
+    """Bir atın durumuna göre gösterilecek ikonu döndürür."""
+    return _DURUM_IKON.get(durum, "⏳")
 
 
 def hesapla_bahis_sayisi(at_sayisi, secili_sistemler):
@@ -115,24 +115,18 @@ def hesapla_sistem_gruplari(at_listesi, col_count, secili_sistemler, misli):
             if has_yatti:
                 durum_str = "Kaybetti"
                 durum_class = "lost"
-                badge_html = '<span class="slip-badge-lost">❌ Kaybetti</span>'
                 kazanc = 0.00
             elif has_bekliyor:
                 durum_str = "Bekliyor"
                 durum_class = "pending"
-                badge_html = (
-                    '<span class="slip-badge-pending">⏳ Bekliyor</span>'
-                )
                 kazanc = round(kolon_orani * misli, 2)
             elif tum_iade:
                 durum_str = "İade"
                 durum_class = "refund"
-                badge_html = '<span class="slip-badge-refund">↩️ İade</span>'
                 kazanc = round(kolon_orani * misli, 2)
             else:
                 durum_str = "Kazandı"
                 durum_class = "won"
-                badge_html = '<span class="slip-badge-won">✅ Kazandı</span>'
                 kazanc = round(kolon_orani * misli, 2)
 
             kombinasyon_listesi.append(
@@ -144,7 +138,6 @@ def hesapla_sistem_gruplari(at_listesi, col_count, secili_sistemler, misli):
                     ),
                     "Durum": durum_str,
                     "DurumClass": durum_class,
-                    "BadgeHTML": badge_html,
                     "Tahmini Kazanç": kazanc,
                 }
             )

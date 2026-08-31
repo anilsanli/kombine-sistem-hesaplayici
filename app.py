@@ -10,7 +10,7 @@ from logic import (
     KOLON_BIRIM_FIYATI,
     TEKNIK_MAKS_AT_SAYISI,
     VARSAYILAN_ORANLAR,
-    at_chip_bilgisi,
+    durum_ikon,
     hesapla_bahis_sayisi,
     hesapla_kupon_bedeli,
     hesapla_sistem_gruplari,
@@ -120,8 +120,8 @@ with analytics_context:
     with head_title_col:
         st.markdown(
             """
-            <div class="hero-container" style="margin-bottom:12px; padding: 20px 24px;">
-                <div class="hero-title">🏇 Kombine Sistem Bahis Simülatörü</div>
+            <div class="hero-container" style="margin-bottom:12px;">
+                <div class="hero-title"><span class="hero-icon-badge">🏇</span> Kombine Sistem Bahis Simülatörü</div>
                 <p class="hero-subtitle">Koşu ve at kombinasyonlarınızı oluşturun; tüm olasılıkları, kolon tutarlarını ve kazanç projeksiyonlarını anlık hesaplayın.</p>
             </div>
             """,
@@ -176,7 +176,7 @@ with analytics_context:
                     st.markdown(
                         f"""
                         <div class="helper-banner" style="border-left-color:#8b5cf6; margin-top:10px; margin-bottom:0;">
-                            🧪 <span><strong>Deneysel Mod Aktif:</strong> Sistem {AKTIF_MAKS_AT_SAYISI + 1}-{TEKNIK_MAKS_AT_SAYISI} gösteriliyor. İdare bu sistemleri henüz resmi olarak yeniden açmadı; bu görünüm yalnızca simülasyon/bilgi amaçlıdır.</span>
+                            🧪 <span><strong>Deneysel mod aktif:</strong> Sistem {AKTIF_MAKS_AT_SAYISI + 1}-{TEKNIK_MAKS_AT_SAYISI} gösteriliyor. Sadece simülasyon/bilgi amaçlıdır.</span>
                         </div>
                         """,
                         unsafe_allow_html=True,
@@ -185,7 +185,7 @@ with analytics_context:
                     st.markdown(
                         f"""
                         <div class="helper-banner" style="border-left-color:#f59e0b; margin-top:10px; margin-bottom:0;">
-                            ⚠️ <span><strong>Güncel Sınır:</strong> İdare (United Racing), Sistem {AKTIF_MAKS_AT_SAYISI + 1}-{TEKNIK_MAKS_AT_SAYISI} desteğini kısa süreliğine açtıktan sonra geri çekti; kombine kuponlar resmi olarak yeniden maksimum {AKTIF_MAKS_AT_SAYISI} ayakla sınırlı. Sağdaki anahtarla deneysel olarak {TEKNIK_MAKS_AT_SAYISI}'ye kadar görüntüleyebilirsiniz.</span>
+                            ℹ️ <span><strong>Güncel sınır:</strong> Kombine kuponlar İdare tarafından şu an maksimum {AKTIF_MAKS_AT_SAYISI} ayakla sınırlı. Sağdaki anahtarla deneysel olarak {TEKNIK_MAKS_AT_SAYISI}'ye kadar görüntüleyebilirsiniz.</span>
                         </div>
                         """,
                         unsafe_allow_html=True,
@@ -246,28 +246,28 @@ with analytics_context:
         bahis_sayisi = hesapla_bahis_sayisi(col_count, secili_sistemler)
         kupon_bedeli = hesapla_kupon_bedeli(bahis_sayisi, misli)
 
-        # Yüksek Kontrastlı Finansal Çubuk
+        # Finansal Kokpit Çubuğu
         st.markdown(
             f"""
             <div class="integrated-kpi-bar">
                 <div class="kpi-segment">
                     <span class="kpi-title">Toplam Bahis</span>
-                    <span class="kpi-number accent">{bahis_sayisi} <span style="font-size:13px; font-weight:500; color:#cbd5e1;">Kolon</span></span>
+                    <span class="kpi-number accent">{bahis_sayisi} <span style="font-size:13px; font-weight:500; color:#94a3b8;">Kolon</span></span>
                 </div>
                 <div class="kpi-divider"></div>
                 <div class="kpi-segment">
                     <span class="kpi-title">Kupon Misli</span>
-                    <span class="kpi-number">{misli} <span style="font-size:13px; font-weight:500; color:#cbd5e1;">Misli</span></span>
+                    <span class="kpi-number">{misli} <span style="font-size:13px; font-weight:500; color:#94a3b8;">Misli</span></span>
                 </div>
                 <div class="kpi-divider"></div>
                 <div class="kpi-segment">
                     <span class="kpi-title">Birim Kolon</span>
-                    <span class="kpi-number">{KOLON_BIRIM_FIYATI:.2f} <span style="font-size:13px; font-weight:500; color:#cbd5e1;">TL</span></span>
+                    <span class="kpi-number">{KOLON_BIRIM_FIYATI:.2f} <span style="font-size:13px; font-weight:500; color:#94a3b8;">TL</span></span>
                 </div>
                 <div class="kpi-divider"></div>
                 <div class="kpi-segment">
                     <span class="kpi-title">Toplam Kupon Tutarı</span>
-                    <span class="kpi-number highlight">{kupon_bedeli:,.2f} <span style="font-size:14px; font-weight:600; color:#6ee7b7;">TL</span></span>
+                    <span class="kpi-number highlight">{kupon_bedeli:,.2f} <span style="font-size:14px; font-weight:600; color:#fb7185;">TL</span></span>
                 </div>
             </div>
             """,
@@ -311,7 +311,7 @@ with analytics_context:
                 st.session_state[f"status_{i}"] = "Bekliyor"
 
             current_status = st.session_state[f"status_{i}"]
-            _, status_icon = at_chip_bilgisi(current_status)
+            status_icon = durum_ikon(current_status)
 
             with grid_cols[c]:
                 with st.container(border=True):

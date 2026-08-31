@@ -12,25 +12,37 @@ html, body, [class*="css"], .stApp {
 
 /* Hero Banner */
 .hero-container {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: 16px;
-    padding: 24px 28px;
-    color: #ffffff;
+    padding: 20px 24px;
+    color: #0f172a;
     margin-bottom: 20px;
-    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
 }
 .hero-title {
-    font-size: 24px;
+    font-size: 21px;
     font-weight: 800;
     margin: 0;
-    color: #ffffff !important;
+    color: #0f172a !important;
     display: flex;
     align-items: center;
     gap: 10px;
 }
+.hero-title .hero-icon-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+    font-size: 19px;
+    flex-shrink: 0;
+}
 .hero-subtitle {
     font-size: 13.5px;
-    color: #cbd5e1 !important;
+    color: #64748b !important;
     margin-top: 6px;
     margin-bottom: 0;
 }
@@ -88,12 +100,11 @@ div[data-testid="stRadio"] div[role="radiogroup"] input {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    background: linear-gradient(135deg, #090d16 0%, #111827 100%) !important;
+    background: #f8fafc !important;
     border-radius: 12px;
-    padding: 16px 20px;
+    padding: 14px 20px;
     margin-top: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.2);
+    border: 1px solid #e2e8f0;
     flex-wrap: wrap;
     gap: 12px;
 }
@@ -111,21 +122,21 @@ div[data-testid="stRadio"] div[role="radiogroup"] input {
     color: #94a3b8 !important;
 }
 .kpi-number {
-    font-size: 20px !important;
+    font-size: 19px !important;
     font-weight: 800 !important;
-    color: #ffffff !important;
+    color: #0f172a !important;
 }
 .kpi-number.accent {
-    color: #fb7185 !important;
+    color: #e11d48 !important;
 }
 .kpi-number.highlight {
-    color: #34d399 !important;
-    font-size: 23px !important;
+    color: #e11d48 !important;
+    font-size: 22px !important;
 }
 .kpi-divider {
     width: 1px;
     height: 32px;
-    background: rgba(255, 255, 255, 0.15);
+    background: #e2e8f0;
 }
 
 /* Koşu & Bilet Kartı Konteyneri */
@@ -150,7 +161,7 @@ div[data-testid="stVerticalBlockBorderWrapper"]:hover {
     align-items: center;
     padding-bottom: 8px;
     margin-bottom: 10px;
-    border-bottom: 1.5px dashed #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
 }
 .race-pill {
     background: #f1f5f9;
@@ -182,97 +193,55 @@ button[data-baseweb="tab"][aria-selected="true"] {
     border-bottom-color: #e11d48 !important;
 }
 
-/* At & Bilet Rozet Stilleri */
-.chip-at-won {
-    background: #dcfce7 !important;
-    border: 1px solid #86efac !important;
-    color: #14532d !important;
-    border-radius: 6px;
-    padding: 4px 8px;
-    font-size: 12px;
+/* Bilet Kartı (Sade) */
+.slip-card {
+    border-left: 3px solid transparent;
+    padding: 2px 4px 2px 12px;
+}
+.slip-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.slip-card-sistem {
+    font-size: 11px;
     font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    margin: 2px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
-.chip-at-lost {
-    background: #fee2e2 !important;
-    border: 1px solid #fca5a5 !important;
-    color: #7f1d1d !important;
-    border-radius: 6px;
-    padding: 4px 8px;
-    font-size: 12px;
+.slip-card-status {
+    font-size: 11.5px;
     font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    margin: 2px;
-    text-decoration: line-through;
-    opacity: 0.85;
+    white-space: nowrap;
 }
-.chip-at-pending {
-    background: #fef9c3 !important;
-    border: 1px solid #fde047 !important;
-    color: #713f12 !important;
-    border-radius: 6px;
-    padding: 4px 8px;
-    font-size: 12px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    margin: 2px;
+.slip-card-horses {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #334155;
+    margin-bottom: 14px;
+    min-height: 24px;
 }
-.chip-at-refund {
-    background: #f1f5f9 !important;
-    border: 1px solid #cbd5e1 !important;
-    color: #475569 !important;
-    border-radius: 6px;
-    padding: 4px 8px;
-    font-size: 12px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    margin: 2px;
+.slip-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 10px;
+    border-top: 1px solid #f1f5f9;
 }
-
-.slip-badge-won {
-    background: #dcfce7;
-    color: #15803d;
-    font-weight: 800;
+.slip-card-oran {
     font-size: 11.5px;
-    padding: 3px 10px;
-    border-radius: 9999px;
-    border: 1px solid #86efac;
+    color: #94a3b8;
 }
-.slip-badge-pending {
-    background: #fef9c3;
-    color: #854d0e;
-    font-weight: 800;
-    font-size: 11.5px;
-    padding: 3px 10px;
-    border-radius: 9999px;
-    border: 1px solid #fef08a;
-}
-.slip-badge-lost {
-    background: #fee2e2;
-    color: #b91c1c;
-    font-weight: 800;
-    font-size: 11.5px;
-    padding: 3px 10px;
-    border-radius: 9999px;
-    border: 1px solid #fca5a5;
-}
-.slip-badge-refund {
-    background: #f1f5f9;
+.slip-card-oran strong {
+    font-size: 13px;
     color: #475569;
+    font-weight: 700;
+}
+.slip-card-payout {
+    font-size: 19px;
     font-weight: 800;
-    font-size: 11.5px;
-    padding: 3px 10px;
-    border-radius: 9999px;
-    border: 1px solid #cbd5e1;
 }
 
 /* Modern Tablo Formatı */
@@ -357,24 +326,20 @@ button[data-baseweb="tab"][aria-selected="true"] {
     font-weight: 700;
 }
 .status-badge.won {
-    background: #dcfce7;
-    color: #15803d;
-    border: 1px solid #86efac;
+    background: #ecfdf5;
+    color: #059669;
 }
 .status-badge.pending {
-    background: #fef9c3;
-    color: #854d0e;
-    border: 1px solid #fef08a;
+    background: #fffbeb;
+    color: #d97706;
 }
 .status-badge.lost {
-    background: #fee2e2;
-    color: #b91c1c;
-    border: 1px solid #fca5a5;
+    background: #fff1f2;
+    color: #e11d48;
 }
 .status-badge.refund {
     background: #f1f5f9;
-    color: #475569;
-    border: 1px solid #cbd5e1;
+    color: #64748b;
 }
 .payout-val {
     font-weight: 800;
@@ -429,30 +394,32 @@ div.stButton > button:hover {
     box-shadow: 0 6px 16px rgba(225, 29, 72, 0.3) !important;
 }
 
-/* İpucu Banner */
+/* İpucu / Bilgi Banner (tek tip, sakin görünüm; renk yalnızca sol kenarlıkta) */
 .helper-banner {
-    background: #ffffff;
+    background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-left: 4px solid #3b82f6;
+    border-left: 3px solid #94a3b8;
     border-radius: 10px;
-    padding: 10px 16px;
-    margin-bottom: 16px;
-    font-size: 13px;
-    color: #1e293b;
+    padding: 9px 14px;
+    margin-bottom: 14px;
+    font-size: 12.5px;
+    color: #475569;
     display: flex;
     align-items: center;
     gap: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+.helper-banner strong {
+    color: #1e293b;
 }
 
 /* İkramiye Özet Hero Paneli */
 .payout-hero {
-    background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e293b 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     border-radius: 18px;
     padding: 24px 28px;
     margin-top: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 28px -8px rgba(15, 23, 42, 0.18);
 }
 .payout-grid {
     display: grid;

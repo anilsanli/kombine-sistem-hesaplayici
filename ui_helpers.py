@@ -3,20 +3,36 @@ import html
 
 import streamlit as st
 
-from logic import at_chip_bilgisi
+from logic import DURUM_GELDI, DURUM_IADE, DURUM_YATTI
+
+_DURUM_METIN_STIL = {
+    DURUM_GELDI: ("#059669", "✓", False),
+    DURUM_YATTI: ("#94a3b8", "✕", True),
+    DURUM_IADE: ("#94a3b8", "↩", False),
+}
+
+_DURUM_CLASS_STIL = {
+    "won": {"accent": "#10b981", "status": "#059669", "payout": "#059669", "icon": "✓"},
+    "pending": {"accent": "#f59e0b", "status": "#d97706", "payout": "#0f172a", "icon": "⏳"},
+    "lost": {"accent": "#f43f5e", "status": "#e11d48", "payout": "#94a3b8", "icon": "✕"},
+    "refund": {"accent": "#94a3b8", "status": "#64748b", "payout": "#64748b", "icon": "↩"},
+}
 
 
-def _chips_html(at_obj_listesi):
-    chips_html = ""
+def _horse_list_inline(at_obj_listesi):
+    """Atları ağır rozet kutuları yerine sade, renk kodlu bir satır olarak listeler."""
+    parcalar = []
     for at in at_obj_listesi:
-        chip_class, chip_icon = at_chip_bilgisi(at["durum"])
-        at_adi = html.escape(str(at["ad"]))
-        bahis_turu = html.escape(str(at["bahis_turu"]))
-        chips_html += (
-            f'<span class="{chip_class}">{chip_icon} {at_adi} '
-            f"({bahis_turu})</span>"
+        renk, ikon, ustu_cizili = _DURUM_METIN_STIL.get(
+            at["durum"], ("#334155", "⏳", False)
         )
-    return chips_html
+        ad = html.escape(str(at["ad"]))
+        stil = f"color:{renk};"
+        if ustu_cizili:
+            stil += " text-decoration:line-through;"
+        parcalar.append(f'<span style="{stil}">{ikon} {ad}</span>')
+    ayrac = '<span style="color:#cbd5e1;"> · </span>'
+    return ayrac.join(parcalar)
 
 
 def render_mini_summary(df, kupon_bedeli=None):
@@ -30,17 +46,17 @@ def render_mini_summary(df, kupon_bedeli=None):
 
     html_out = f"""
     <div style="display:flex; gap:10px; flex-wrap:wrap; margin: 6px 0 14px 0;">
-        <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:8px; padding:6px 12px;">
-            <span style="font-size:10.5px; font-weight:700; color:#047857; text-transform:uppercase;">Kesinleşen</span><br>
-            <span style="font-size:14px; font-weight:800; color:#065f46;">{kesinlesen:,.2f} TL</span>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:6px 12px;">
+            <span style="font-size:10.5px; font-weight:700; color:#059669; text-transform:uppercase;">Kesinleşen</span><br>
+            <span style="font-size:14px; font-weight:800; color:#0f172a;">{kesinlesen:,.2f} TL</span>
         </div>
-        <div style="background:#fefce8; border:1px solid #fde68a; border-radius:8px; padding:6px 12px;">
-            <span style="font-size:10.5px; font-weight:700; color:#a16207; text-transform:uppercase;">Bekleyen Potansiyel</span><br>
-            <span style="font-size:14px; font-weight:800; color:#854d0e;">{bekleyen:,.2f} TL</span>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:6px 12px;">
+            <span style="font-size:10.5px; font-weight:700; color:#d97706; text-transform:uppercase;">Bekleyen Potansiyel</span><br>
+            <span style="font-size:14px; font-weight:800; color:#0f172a;">{bekleyen:,.2f} TL</span>
         </div>
-        <div style="background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; padding:6px 12px;">
-            <span style="font-size:10.5px; font-weight:700; color:#475569; text-transform:uppercase;">İade</span><br>
-            <span style="font-size:14px; font-weight:800; color:#334155;">{iade:,.2f} TL</span>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:6px 12px;">
+            <span style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase;">İade</span><br>
+            <span style="font-size:14px; font-weight:800; color:#0f172a;">{iade:,.2f} TL</span>
         </div>
     </div>
     """
@@ -63,13 +79,10 @@ def uygula_siralama(df, siralama_secimi):
 
 
 def render_native_bet_slips(df_table):
-    """Kombinasyonları dijital bilet kartları olarak basar."""
+    """Kombinasyonları sade, dengeli bilet kartları olarak basar."""
     if df_table.empty:
         st.info("Filtreye uygun kombinasyon bulunamadı.")
         return
-
-    border_colors = {"won": "#10b981", "pending": "#f59e0b", "lost": "#f43f5e", "refund": "#94a3b8"}
-    payout_colors = {"won": "#10b981", "pending": "#0f172a", "lost": "#64748b", "refund": "#475569"}
 
     cols_per_slip_row = 3
     rows = [
@@ -80,37 +93,22 @@ def render_native_bet_slips(df_table):
     for row_chunk in rows:
         slip_cols = st.columns(len(row_chunk))
         for col_idx, (_, row) in enumerate(row_chunk.iterrows()):
-            border_color = border_colors.get(row["DurumClass"], "#94a3b8")
-            payout_color = payout_colors.get(row["DurumClass"], "#0f172a")
+            stil = _DURUM_CLASS_STIL.get(row["DurumClass"], _DURUM_CLASS_STIL["pending"])
+            horse_list = _horse_list_inline(row["AtObjeleri"])
 
             with slip_cols[col_idx]:
                 with st.container(border=True):
                     st.markdown(
                         f"""
-                        <div style="border-left: 4px solid {border_color}; padding-left: 8px; margin-bottom: 8px; display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-size:12px; font-weight:800; color:#334155; text-transform:uppercase; letter-spacing:0.04em;">{row['Sistem']}</span>
-                            {row['BadgeHTML']}
-                        </div>
-                        """,
-                        unsafe_allow_html=True,
-                    )
-
-                    chips = _chips_html(row["AtObjeleri"])
-                    st.markdown(
-                        f'<div style="margin: 10px 0 12px 0; min-height: 48px; display:flex; flex-wrap:wrap; align-items:center;">{chips}</div>',
-                        unsafe_allow_html=True,
-                    )
-
-                    st.markdown(
-                        f"""
-                        <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1.5px dashed #e2e8f0; padding-top:8px; margin-top:4px;">
-                            <div>
-                                <div style="font-size:10px; color:#64748b; font-weight:700; text-transform:uppercase;">KOLON ORANI</div>
-                                <div style="font-size:14px; font-weight:800; color:#0f172a;">{row['Kolon Oranı']:.2f}</div>
+                        <div class="slip-card" style="border-left-color:{stil['accent']};">
+                            <div class="slip-card-top">
+                                <span class="slip-card-sistem">{row['Sistem']}</span>
+                                <span class="slip-card-status" style="color:{stil['status']};">{stil['icon']} {row['Durum']}</span>
                             </div>
-                            <div style="text-align:right;">
-                                <div style="font-size:10px; color:#64748b; font-weight:700; text-transform:uppercase;">KAZANÇ / POTANSİYEL</div>
-                                <div style="font-size:16px; font-weight:800; color:{payout_color};">{row['Tahmini Kazanç']:,.2f} TL</div>
+                            <div class="slip-card-horses">{horse_list}</div>
+                            <div class="slip-card-bottom">
+                                <span class="slip-card-oran">Oran <strong>{row['Kolon Oranı']:.2f}</strong></span>
+                                <span class="slip-card-payout" style="color:{stil['payout']};">{row['Tahmini Kazanç']:,.2f} TL</span>
                             </div>
                         </div>
                         """,
@@ -119,14 +117,14 @@ def render_native_bet_slips(df_table):
 
 
 def render_modern_table(df_table, show_system_col=False):
-    """Kombinasyonları modern bir HTML tablo olarak döndürür."""
+    """Kombinasyonları sade bir HTML tablo olarak döndürür."""
     if df_table.empty:
         return (
             '<div style="padding:24px; text-align:center; color:#64748b;'
             ' font-size:13px;">Filtreye uygun kolon bulunamadı.</div>'
         )
 
-    badge_icons = {"won": "✅", "pending": "⏳", "lost": "❌", "refund": "↩️"}
+    badge_icons = {"won": "✓", "pending": "⏳", "lost": "✕", "refund": "↩"}
 
     html_out = '<div class="table-responsive-wrapper"><div class="modern-table-container"><table class="modern-table"><thead><tr>'
     if show_system_col:
@@ -147,8 +145,8 @@ def render_modern_table(df_table, show_system_col=False):
         if show_system_col:
             html_out += f'<td style="font-weight:700; color:#475569;">{html.escape(row["Sistem"])}</td>'
 
-        chips = _chips_html(row["AtObjeleri"])
-        html_out += f'<td><div style="display:flex; flex-wrap:wrap; align-items:center;">{chips}</div></td>'
+        horse_list = _horse_list_inline(row["AtObjeleri"])
+        html_out += f'<td><div style="line-height:1.7;">{horse_list}</div></td>'
 
         html_out += f'<td style="text-align:right; font-weight:700;">{row["Kolon Oranı"]:.2f}</td>'
 
