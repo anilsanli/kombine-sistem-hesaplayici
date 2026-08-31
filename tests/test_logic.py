@@ -5,10 +5,13 @@ import unittest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from logic import (  # noqa: E402
+    AKTIF_MAKS_AT_SAYISI,
+    BAHIS_TURLERI,
     DURUM_BEKLIYOR,
     DURUM_GELDI,
     DURUM_IADE,
     DURUM_YATTI,
+    TEKNIK_MAKS_AT_SAYISI,
     hesapla_bahis_sayisi,
     hesapla_kupon_bedeli,
     hesapla_sistem_gruplari,
@@ -96,6 +99,17 @@ class TestHesaplaSistemGruplari(unittest.TestCase):
         self.assertNotIn(2, gruplar)
         self.assertIn(1, gruplar)
         self.assertEqual(len(gruplar[1]), 2)
+
+
+class TestSistemLimitVeBahisTurleri(unittest.TestCase):
+    def test_kim_gecer_bahis_turu_listede(self):
+        self.assertIn("Kim Geçer?", BAHIS_TURLERI)
+
+    def test_aktif_limit_teknik_limiti_asamaz(self):
+        # İdare limiti (AKTIF_MAKS_AT_SAYISI) her zaman alt yapının
+        # desteklediği teknik üst sınırı (TEKNIK_MAKS_AT_SAYISI) aşmamalı.
+        self.assertLessEqual(AKTIF_MAKS_AT_SAYISI, TEKNIK_MAKS_AT_SAYISI)
+        self.assertGreaterEqual(AKTIF_MAKS_AT_SAYISI, 2)
 
 
 if __name__ == "__main__":

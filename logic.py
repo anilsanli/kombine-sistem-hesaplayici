@@ -22,12 +22,22 @@ BAHIS_TURLERI = [
     "İlk 4",
     "İkili Bahis",
     "Sıralı İkili Bahis",
+    "Kim Geçer?",
 ]
 
 VARSAYILAN_ORANLAR = [5.50, 1.70, 25.00, 12.00, 3.50, 8.00, 15.00]
 
 # Kolon birim fiyatı bu proje kapsamında sabittir (1 TL).
 KOLON_BIRIM_FIYATI = 1.0
+
+# İdare (United Racing), kombine sistem bahislerinde bir süreliğine Sistem
+# 7'ye kadar izin verdikten kısa süre sonra bunu geri çekip yeniden 4 ayakla
+# sınırladı. Ne zaman tekrar yükseltileceği belirsiz olduğu için alt yapı
+# (hesaplama motoru, varsayılan oran/durum dizileri) 7'ye kadar hazır
+# tutuluyor; arayüzde şu an yalnızca AKTIF_MAKS_AT_SAYISI kadarı açık.
+# İdare limiti değiştiğinde tek yapılması gereken bu sabiti güncellemek.
+AKTIF_MAKS_AT_SAYISI = 4
+TEKNIK_MAKS_AT_SAYISI = 7
 
 # Kombinasyon/rozet durumlarına göre görsel eşlemeler
 _CHIP_BILGISI = {

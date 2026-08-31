@@ -10,10 +10,11 @@
 
 ## 🚀 Öne Çıkan Özellikler
 
-- **🎯 7 Koşuya Kadar Gelişmiş Sistem Motoru:** Kupondaki at sayısına göre (2 - 7 arası) **Sistem 1'den Sistem 7'ye** tüm kombinasyonları anında üretir.
+- **🎯 Esnek Sistem Motoru:** Kupondaki at sayısına göre Sistem 1'den başlayarak tüm kombinasyonları anında üretir. Alt yapı Sistem 7'ye kadar hazırdır; ancak İdare'nin (United Racing) güncel kombine bahis limiti gereği arayüzde şu an **Sistem 4**'e kadar açık — limit yükseltildiğinde tek bir ayarla yeniden genişletilebilir.
 - **🎟️ Çift Görünüm Modu:** Kombinasyonları hem modern **Dijital Bilet (Kart)** mimarisinde hem de **Genişletilmiş Tablo** formatında inceleme imkanı.
 - **🏷️ Akıllı Durum Rozetleri (Status-Aware):** Her at ve kolon için *Geldi (Kazandı ✅)*, *Bekliyor (⏳)*, *Yattı (Kaybetti ❌)* ve *Koşmaz (İade ↩️)* durumlarının bireysel ve zincirleme görselleştirilmesi.
-- **🔍 Akıllı Filtreleme:** Canlı kalan kolonları (*Kazanan + Bekleyen*), yalnızca kazananları veya kaybeden kolonları tek tıkla filtreleme.
+- **🔍 Akıllı Filtreleme:** Canlı kalan, yalnızca kazanan, bekleyen, kaybeden veya iade edilen kolonları tek tıkla filtreleme.
+- **🐎 Genişletilmiş Bahis Türleri:** Ganyan, İkili Bahis, Sıralı İkili Bahis ve **"Kim Geçer?"** dahil güncel bahis türü seçenekleri.
 - **💰 Gelişmiş Finansal Kokpit:**
   - **✅ Garantilenen Kazanç:** Sonucu kesinleşen kombinasyonlardan elde edilen net tutar.
   - **⏳ Maksimum Olası Kazanç:** Devam eden/bekleyen tüm atların gelmesi durumundaki potansiyel ikramiye.

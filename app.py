@@ -4,9 +4,11 @@ import pandas as pd
 import streamlit as st
 
 from logic import (
+    AKTIF_MAKS_AT_SAYISI,
     BAHIS_TURLERI,
     DURUM_SECENEKLERI,
     KOLON_BIRIM_FIYATI,
+    TEKNIK_MAKS_AT_SAYISI,
     VARSAYILAN_ORANLAR,
     at_chip_bilgisi,
     hesapla_bahis_sayisi,
@@ -46,15 +48,28 @@ with analytics_context:
     # -------------------------------------------------------------
     # İSTEĞE BAĞLI DİALOG MODALLERİ (YENİLİKLER & REHBER)
     # -------------------------------------------------------------
-    @st.dialog("✨ Sürüm Notları ve Yenilikler (v2.1)")
+    @st.dialog("✨ Sürüm Notları ve Yenilikler (v2.2)")
     def show_changelog():
         st.markdown(
-            """
-            #### 🚀 v2.1 Güncellemesi ile Neler Geldi?
-            * **↩️ Doğru İade Mantığı:** Bir kolondaki tüm atlar "Koşmaz (İade)" ise artık kolon "Kazandı" değil, doğru şekilde **İade** olarak işaretleniyor.
-            * **📊 Sistem Bazlı Özet:** Her sistem sekmesinde o sisteme özel Kesinleşen / Bekleyen / İade tutarları anında görünüyor.
+            f"""
+            #### 🆕 v2.2 Güncellemesi ile Neler Geldi?
+            * **🐎 "Kim Geçer?" Bahis Türü:** İsim & Tür Ekle bölümündeki bahis türü seçeneklerine eklendi.
+            * **⚠️ Sistem {AKTIF_MAKS_AT_SAYISI + 1}-{TEKNIK_MAKS_AT_SAYISI} Resmi Olarak Geçici Kapalı:** İdare (United Racing), kombine sistem bahislerinde kısa süreliğine açtığı Sistem {TEKNIK_MAKS_AT_SAYISI} desteğini geri çekti. Kuponlar şu an için resmi olarak yeniden maksimum **Sistem {AKTIF_MAKS_AT_SAYISI}** ile sınırlı.
+            * **🧪 Deneysel Sistem {TEKNIK_MAKS_AT_SAYISI} Anahtarı:** Özellik tamamen kaldırılmadı — "Kupon Parametreleri" panelindeki anahtarı açarak Sistem {AKTIF_MAKS_AT_SAYISI + 1}-{TEKNIK_MAKS_AT_SAYISI}'yi deneysel/simülasyon amaçlı görüntülemeye devam edebilirsiniz. Varsayılan olarak kapalıdır; İdare limiti yeniden yükseltildiğinde resmi hale gelecektir.
+
+            #### 🚀 v2.1 ile Gelenler
+            * **↩️ Doğru İade Mantığı:** Bir kolondaki tüm atlar "Koşmaz (İade)" ise kolon "Kazandı" değil, doğru şekilde **İade** olarak işaretlenir.
+            * **📊 Sistem Bazlı Özet:** Her sistem sekmesinde o sisteme özel Kesinleşen / Bekleyen / İade tutarları anında görünür.
             * **↕️ Sıralama:** Kombinasyonları oran veya kazanca göre büyükten küçüğe / küçükten büyüğe sıralayabilirsiniz.
-            * **🧹 Genel Bakım:** Mobil görünüm ve girdi güvenliği (özel karakterler) iyileştirildi.
+            * **🧹 Genel Bakım:** Mobil görünüm ve girdi güvenliği iyileştirildi.
+
+            #### 🏇 Simülatörün Genel Özellikleri
+            * **Sistem Motoru:** Kupondaki at sayısına göre (İdare limiti dahilinde) Sistem 1'den başlayarak tüm kombinasyonları anında üretir.
+            * **🎟️ Çift Görünüm Modu:** Kombinasyonları Dijital Bilet (Kart) veya Genişletilmiş Tablo formatında inceleme.
+            * **🏷️ Akıllı Durum Rozetleri:** Her at ve kolon için Geldi ✅, Bekliyor ⏳, Yattı ❌ ve Koşmaz (İade) ↩️ durumlarının anlık görselleştirilmesi.
+            * **🔍 Akıllı Filtreleme:** Canlı kalan, yalnızca kazanan, bekleyen, kaybeden veya iade edilen kolonları tek tıkla filtreleme.
+            * **💰 Finansal Kokpit:** Garantilenen Kazanç, Maksimum Olası Kazanç ve Net Kâr/Zarar (%ROI) anlık projeksiyonu.
+            * **📖 Dahili Rehber:** Uygulama içi modal pencerelerle kullanım rehberi ve sürüm notları.
             """
         )
         if st.button("Kapat", key="btn_close_chg", use_container_width=True):
@@ -63,11 +78,11 @@ with analytics_context:
     @st.dialog("📖 Simülatör Nasıl Kullanılır?")
     def show_guide():
         st.markdown(
-            """
+            f"""
             #### 📌 3 Adımda Sistem Bahsi Hesaplama
 
             1. **Kupon Yapısını Seçin:**
-               * Kuponda kaç at olduğunu belirleyin (2 - 7 arası).
+               * Kuponda kaç at olduğunu belirleyin (İdare limiti dahilinde 2 - {AKTIF_MAKS_AT_SAYISI} arası; "🧪 Sistem {TEKNIK_MAKS_AT_SAYISI}'ye kadar göster" anahtarıyla deneysel olarak {TEKNIK_MAKS_AT_SAYISI}'ye kadar da görüntülenebilir).
                * Oynamak istediğiniz Sistemleri (S1, S2, S3 vb.) ve Misli katsayınızı işaretleyin.
 
             2. **Oranları ve Sonuçları Girin:**
@@ -84,8 +99,9 @@ with analytics_context:
 
     # SESSION STATE SIFIRLAMA
     def sifirla():
-        st.session_state["radio_col_count"] = 4
+        st.session_state["radio_col_count"] = AKTIF_MAKS_AT_SAYISI
         st.session_state["num_misli"] = 1
+        st.session_state["genisletilmis_sistem"] = False
 
         for s in range(1, 8):
             st.session_state[f"sys{s}"] = s in [1, 2, 3]
@@ -115,7 +131,7 @@ with analytics_context:
         st.write("&nbsp;")
         b_c1, b_c2 = st.columns(2)
         with b_c1:
-            if st.button("✨ Yenilikler", use_container_width=True, help="v2.1 Güncelleme Notları"):
+            if st.button("✨ Yenilikler", use_container_width=True, help="v2.2 Güncelleme Notları"):
                 show_changelog()
         with b_c2:
             if st.button("📖 Rehber", use_container_width=True, help="Nasıl Kullanılır?"):
@@ -137,6 +153,49 @@ with analytics_context:
                 help="Tüm seçimleri varsayılana döndür",
             )
 
+        genisletilmis = False
+        if AKTIF_MAKS_AT_SAYISI < TEKNIK_MAKS_AT_SAYISI:
+            st.session_state.setdefault("genisletilmis_sistem", False)
+
+            banner_col, toggle_col = st.columns([3.3, 1.7])
+            with toggle_col:
+                st.markdown("<div style='height:18px;'></div>", unsafe_allow_html=True)
+                genisletilmis = st.toggle(
+                    f"🧪 Sistem {TEKNIK_MAKS_AT_SAYISI}'ye kadar göster",
+                    key="genisletilmis_sistem",
+                    help=(
+                        "Deneysel moddur. İdare şu an resmi olarak yalnızca "
+                        f"Sistem {AKTIF_MAKS_AT_SAYISI}'e izin veriyor; bu "
+                        f"modda görünen Sistem {AKTIF_MAKS_AT_SAYISI + 1}-"
+                        f"{TEKNIK_MAKS_AT_SAYISI} yalnızca simülasyon "
+                        "amaçlıdır."
+                    ),
+                )
+            with banner_col:
+                if genisletilmis:
+                    st.markdown(
+                        f"""
+                        <div class="helper-banner" style="border-left-color:#8b5cf6; margin-top:10px; margin-bottom:0;">
+                            🧪 <span><strong>Deneysel Mod Aktif:</strong> Sistem {AKTIF_MAKS_AT_SAYISI + 1}-{TEKNIK_MAKS_AT_SAYISI} gösteriliyor. İdare bu sistemleri henüz resmi olarak yeniden açmadı; bu görünüm yalnızca simülasyon/bilgi amaçlıdır.</span>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                else:
+                    st.markdown(
+                        f"""
+                        <div class="helper-banner" style="border-left-color:#f59e0b; margin-top:10px; margin-bottom:0;">
+                            ⚠️ <span><strong>Güncel Sınır:</strong> İdare (United Racing), Sistem {AKTIF_MAKS_AT_SAYISI + 1}-{TEKNIK_MAKS_AT_SAYISI} desteğini kısa süreliğine açtıktan sonra geri çekti; kombine kuponlar resmi olarak yeniden maksimum {AKTIF_MAKS_AT_SAYISI} ayakla sınırlı. Sağdaki anahtarla deneysel olarak {TEKNIK_MAKS_AT_SAYISI}'ye kadar görüntüleyebilirsiniz.</span>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+
+        efektif_maks_at = TEKNIK_MAKS_AT_SAYISI if genisletilmis else AKTIF_MAKS_AT_SAYISI
+
+        if st.session_state.get("radio_col_count", AKTIF_MAKS_AT_SAYISI) > efektif_maks_at:
+            st.session_state["radio_col_count"] = efektif_maks_at
+
         st.markdown('<div class="mobile-stack-anchor"></div>', unsafe_allow_html=True)
         col_at, col_sistem, col_misli = st.columns([1.1, 2.3, 0.9])
 
@@ -144,18 +203,27 @@ with analytics_context:
             st.caption("**Kuponda Kaç At Var?**")
             col_count = st.radio(
                 "At Sayısı",
-                options=[2, 3, 4, 5, 6, 7],
+                options=list(range(2, efektif_maks_at + 1)),
                 key="radio_col_count",
                 horizontal=True,
                 label_visibility="collapsed",
+                help=(
+                    f"İdare şu an kombine sistem bahislerini resmi olarak "
+                    f"maksimum {AKTIF_MAKS_AT_SAYISI} ayakla sınırlıyor."
+                    + (
+                        f" Deneysel mod aktif olduğu için şu an {TEKNIK_MAKS_AT_SAYISI}'ye kadar seçebilirsiniz."
+                        if genisletilmis
+                        else ""
+                    )
+                ),
             )
 
         with col_sistem:
             st.caption("**Aktif Sistemler**")
-            sys_cols = st.columns(7)
+            sys_cols = st.columns(efektif_maks_at)
             secili_sistemler = {}
 
-            for s in range(1, 8):
+            for s in range(1, efektif_maks_at + 1):
                 with sys_cols[s - 1]:
                     st.markdown('<div class="system-pill">', unsafe_allow_html=True)
                     secili_sistemler[s] = st.checkbox(
